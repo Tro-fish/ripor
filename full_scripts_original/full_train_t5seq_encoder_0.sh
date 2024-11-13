@@ -27,7 +27,6 @@ python -m torch.distributed.launch --nproc_per_node=2 -m t5_pretrainer_ours.pret
         --use_fp16 \
         --collection_path=$collection_path \
         --max_length=128 \
-        --save_steps=5000 \
-        --per_device_train_batch_size=32 \
+        --per_device_train_batch_size=64 \
         --queries_path=$queries_path \
         --pretrained_path=$pretrained_path 

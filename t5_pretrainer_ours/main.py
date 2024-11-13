@@ -48,7 +48,6 @@ def main():
 
     eval_dataset = None 
     eval_collator = None
-
     if args.model_type == "t5_docid_gen_encoder":
         if args.local_rank <= 0:
             print(f"apply t5_docid_gen_encoder for data, model_name_or_path: {model_args.model_name_or_path}")
@@ -59,7 +58,6 @@ def main():
                                             query_dir=args.queries_path,
                                             qrels_path=args.qrels_path,
                                             docid_to_smtid_path=args.docid_to_smtid_path)
-                                            
             train_collator = MarginMSEforPretrainCollator(model_args.model_name_or_path, max_length=args.max_length)
         elif args.loss_type == "t5seq_aq_encoder_margin_mse":
             train_dataset = MarginMSEforT5SeqAQDataset(dataset_path=args.teacher_score_path,
@@ -168,7 +166,6 @@ def main():
     if args.local_rank <= 0:
         print("docid_to_smtids_path: ", args.docid_to_smtid_path)
         print("pretrained_path: ", args.pretrained_path)
-        
     if args.model_type in ["t5_docid_gen_encoder"]:
         trainer = CondDocID_DRTrainer(
             model = model,
