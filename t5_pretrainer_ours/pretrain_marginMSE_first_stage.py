@@ -41,7 +41,7 @@ def main():
     parser = HfArgumentParser((ModelArguments, Arguments))
     model_args, args = parser.parse_args_into_dataclasses()
 
-    # save args log to disk 
+    # save args log to disk
     if args.local_rank <= 0:
         save_train_args(model_args, args)
     

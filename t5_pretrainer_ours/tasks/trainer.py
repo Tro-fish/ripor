@@ -191,7 +191,6 @@ class CondDocID_DRTrainer(Trainer):
 
         unwrap_model(self.model).save_pretrained(output_dir)
             
-
         if self.tokenizer is not None:
             self.tokenizer.save_pretrained(output_dir)
 
