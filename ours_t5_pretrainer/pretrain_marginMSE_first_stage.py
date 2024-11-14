@@ -78,6 +78,7 @@ def main():
     training_args = CondDocID_TrainingArgs(
         output_dir=args.output_dir,
         do_train=True,
+        tokenizer_dir=args.tokenizer_dir,
         do_eval=args.do_eval,
         learning_rate=args.learning_rate,
         warmup_ratio=args.warmup_ratio,

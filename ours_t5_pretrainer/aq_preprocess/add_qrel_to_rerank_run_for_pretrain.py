@@ -4,9 +4,10 @@ from tqdm import tqdm
 import numpy as np
 
 qid_to_reldocid_to_score_path = "./data/msmarco-full/all_train_queries/qid_to_reldocid_to_score.json"
-qid_pids_rerank_scores_path = "./experiments-full-t5seq-aq/t5_docid_gen_encoder_1/out/MSMARCO_TRAIN/qid_docids_teacher_scores.train.json"
 
-out_path = "./experiments-full-t5seq-aq/t5_docid_gen_encoder_1/out/MSMARCO_TRAIN/qrel_added_qid_docids_teacher_scores.train.json"
+qid_pids_rerank_scores_path = "./experiments-full-t5seq-aq/t5_docid_gen_encoder_0/out/MSMARCO_TRAIN/qid_docids_teacher_scores.train.json"
+
+out_path = "./experiments-full-t5seq-aq/t5_docid_gen_encoder_for_pretrain/out/MSMARCO_TRAIN/qrel_added_qid_docids_teacher_scores.train.json"
 with open(qid_to_reldocid_to_score_path) as fin:
     qid_to_reldocid_to_score = ujson.load(fin)
 

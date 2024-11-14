@@ -113,7 +113,7 @@ class DRTrainer(Trainer):
         model_args = unwrap_model(self.model).model_args
         if self.args.should_save:
             unwrap_model(self.model).save_pretrained(self.args.output_dir)
-            tokenizer.save_pretrained(self.args.output_dir)
+            tokenizer.save_pretrained(tokenizer_dir)
         # Good practice: save your training arguments together with the trained model
         torch.save(self.args, os.path.join(self.args.output_dir, TRAINING_ARGS_NAME))
         torch.save()
@@ -142,6 +142,7 @@ class CondDocID_TrainingArgs(TrainingArguments):
     ln_to_weight: Dict[str, float] = field(default=None)
     num_tasks: Optional[int] = field(default=None, init=False)
     num_return_sequences: Optional[int] = field(default=100)
+    tokenizer_dir: Optional[str] = field(default=None)  # 새로 추가된 부분
 
     def __post_init__(self):
         super().__post_init__()
@@ -162,7 +163,6 @@ class CondDocID_TrainingArgs(TrainingArguments):
 class CondDocID_DRTrainer(Trainer):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        
         self.task_names = self.args.task_names
 
     def add_eval_data_collator(self, eval_data_collator):
@@ -175,10 +175,10 @@ class CondDocID_DRTrainer(Trainer):
         losses = model(**inputs)
         return losses
     
-    def save_torch_model_and_tokenizer(self, tokenizer):
+    def save_torch_model_and_tokenizer(self, tokenizer, tokenizer_dir=None):
         if self.args.should_save:
             unwrap_model(self.model).save_pretrained(self.args.output_dir)
-            tokenizer.save_pretrained(self.args.output_dir)
+            tokenizer.save_pretrained(tokenizer_dir)
         # Good practice: save your training arguments together with the trained model
         torch.save(self.args, os.path.join(self.args.output_dir, TRAINING_ARGS_NAME))
         torch.save(unwrap_model(self.model).model_args, os.path.join(self.args.output_dir, MODEL_ARGS_NAME))
@@ -315,6 +315,7 @@ class CondDocID_DRTrainer(Trainer):
 
         if self.control.should_save:
             self._save_checkpoint(model, trial, metrics=metrics)
+            self.save_torch_model_and_tokenizer(self.data_collator.tokenizer, self.args.tokenizer_dir)
             self.control = self.callback_handler.on_save(self.args, self.state, self.control)
 
     def train(

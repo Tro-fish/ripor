@@ -6,15 +6,15 @@ queries_path=./data/msmarco-full/all_train_queries/train_queries
 
 # model dir
 experiment_dir=experiments-full-t5seq-aq
-pretrained_path=t5-base
+model_dir="./$experiment_dir/t5_docid_gen_encoder_0"
+pretrained_path=$model_dir/checkpoint/
 
 # train_examples path
-teacher_score_path=./data/msmarco-full/bm25_run/qrel_added_qid_docids_teacher_scores.train.json
-run_name=t5_docid_gen_encoder_0
+teacher_score_path=$model_dir/all_train/MSMARCO_TRAIN/qrel_added_qid_docids_teacher_scores.train.json
+run_name=t5_docid_gen_encoder_1
 output_dir="./$experiment_dir/"
-tokenizer_dir="./$experiment_dir/tokenzier/"
 
-python -m torch.distributed.launch --nproc_per_node=2 -m ours_t5_pretrainer.pretrain_marginMSE_first_stage \
+python -m torch.distributed.launch --nproc_per_node=2 -m ours_t5_pretrainer.main \
         --epochs=50 \
         --run_name=$run_name \
         --learning_rate=1e-4 \
@@ -26,10 +26,8 @@ python -m torch.distributed.launch --nproc_per_node=2 -m ours_t5_pretrainer.pret
         --task_names='["rank"]' \
         --wandb_project_name=full_t5seq_encoder \
         --use_fp16 \
-        --tokenizer_dir=$tokenizer_dir \
         --collection_path=$collection_path \
         --max_length=128 \
-        --save_steps=5 \
-        --per_device_train_batch_size=32 \
+        --per_device_train_batch_size=64 \
         --queries_path=$queries_path \
         --pretrained_path=$pretrained_path 

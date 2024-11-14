@@ -22,6 +22,7 @@ class Arguments:
     queries_path: str = field(default="/home/ec2-user/quic-efs/user/hansizeng/work/data/msmarco/train_queries/queries")
     qrels_path: str = field(default="/home/ec2-user/quic-efs/user/hansizeng/work/data/msmarco/train_queries/qrels.json")
     output_dir: str = field(default="/home/ec2-user/quic-efs/user/hansizeng/work/t5_pretrainer/t5_pretrainer/experiments/")
+    tokenizer_dir: Optional[str] = field(default=None)  # 새로 추가된 부분
     example_path: Optional[str] = field(default=None)
     pseudo_queries_to_docid_path: Optional[str] = field(default=None)
     pseudo_queries_to_mul_docid_path: Optional[str] = field(default=None)
@@ -153,7 +154,7 @@ class EvalArguments:
     flat_index_dir: str = field(default=None)
     model_name_or_path: str = field(default="t5-base")
     max_length: int = field(default=256)
-    index_retrieve_batch_size: int = field(default=256)
+    index_retrieve_batch_size: int = field(default=512)
     local_rank: int = field(default=-1)
     task: str = field(default="")
     topk: int = field(default=1000)
